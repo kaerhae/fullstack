@@ -1,0 +1,7 @@
+title Fullstack T0.6
+
+Käyttäjä->Selain: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+Selain->Palvelin: sendToServer(note)
+Palvelin->Selain:redrawNotes()
+note over Selain: Näytölle tulostuu uusi muistiinpano
+end note
