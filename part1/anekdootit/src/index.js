@@ -12,12 +12,17 @@ const Button = (props) => {
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
-  const [vote, setVote] = useState(0)
+  const [points, setPoints] = useState([
+    0, 0, 0, 0, 0 ,0
+  ])
+
+
+
+  const randomAnect = Math.floor(Math.random() * anecdotes.length)
 
   const clickHandler = () => {
     
     // Console-komento satunnaisgeneraattorin tarkistusta varten
-    const randomAnect = Math.floor(Math.random() * anecdotes.length)
     const newSelected = anecdotes[randomAnect]
     console.log(newSelected)
     console.log(randomAnect)
@@ -27,18 +32,22 @@ const App = (props) => {
 
   const handleVote = (props) => {
 
-    
-    const copy = [...point]
-  
-    console.log(point[2])
-    point[2] += 1
-    console.log(point[2])
+    const valittuPoint = points[selected]
+    const newVote = {
+      ...points,
+      valittuPoint: points += 1
+    }
+
+    setPoints(newVote)
+
+
 
   }
 
   return (
     <div>
       {props.anecdotes[selected]}
+      <div>This has {points[selected]} votes</div>
       <Button text="Vote" onClick={handleVote} />
       <Button text="Next anecdote" onClick={clickHandler}/>
     </div>
@@ -54,7 +63,7 @@ const anecdotes = [
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
 
-const point = Array.apply(null, new Array(6)).map(Number.prototype.valueOf, 0)
+const points = [0, 0, 0, 0, 0, 0]
 
 
 
