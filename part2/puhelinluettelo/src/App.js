@@ -13,7 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ newPerson,  setNewPerson ] = useState('')
-  const [ successMessage, setSuccessMessage ] = useState('')
+  const [ successMessage, setSuccessMessage ] = useState(null)
 
 
 
