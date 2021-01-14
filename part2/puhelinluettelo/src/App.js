@@ -13,7 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ newPerson,  setNewPerson ] = useState('')
-  const [ successMessage, setSuccessMessage ] = useState(null)
+  const [ message, setMessage ] = useState(null)
 
 
 
@@ -76,17 +76,22 @@ const App = () => {
             console.log(filtered)
           
             setPersons(filtered)
-            setSuccessMessage(
+            setMessage(
               ` '${response.data.name}' was updated succesfully to the server`
             )
             setTimeout(() => {
-              setSuccessMessage(null)
+              setMessage(null)
             }, 11000)
           })
-          
+          .catch(error => {
+            setMessage(
+              `Person was already removed from server`
 
-       
-
+            )
+            setTimeout(() => {
+              setMessage(null)
+            }, 5000)
+          })
         
       }
       
@@ -102,11 +107,11 @@ const App = () => {
 
           setNewPerson('')
 
-          setSuccessMessage(
+          setMessage(
             ` '${response.data.name}' was added succesfully to the server`
           )
           setTimeout(() => {
-            setSuccessMessage(null)
+            setMessage(null)
           }, 11000)
   
 
@@ -131,11 +136,11 @@ const App = () => {
         const poistettu = successMessage.name
         console.log(poistettu)
 
-        setSuccessMessage(
+        setMessage(
           ` '${poistettu}' was deleted succesfully to the server`
         )
         setTimeout(() => {
-          setSuccessMessage(null)
+          setMessage(null)
         }, 11000)
         const filtered = persons.filter(person => person.id != id)
         setPersons(filtered)   
@@ -147,7 +152,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={successMessage} />
+      <Notification message={message} />
 
       <h2>Phonebook</h2>
       <Filter value={newSearch} onChange={handleFilterChange}/>
