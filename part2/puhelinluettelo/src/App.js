@@ -46,29 +46,25 @@ const App = () => {
 
 
   const handleSubmit = (event) => {
-    const lowCased = newName.toLowerCase()
-    const personResult = persons.find( ({ name }) => name.toLowerCase() === lowCased)
-    const numberResult = persons.find( ({ number }) => number === newNumber)
-    console.log(personResult)
-    console.log(numberResult)
-    const personObject = {
+    event.preventDefault()
+
+    const personResult = persons.find( ({ name }) => 
+    name.toLowerCase() === newName.toLowerCase())
+    const personObject = 
+    {
       name: newName,
       number: newNumber,
      
-    }
-
-
-    
+    }    
     if(personResult)
     {
+      console.log("Miksi me ollaan täällä?")
       if(window.confirm("Haluatko lisätä uuden numeron henkilölle?"))
-      {
-
+      { 
+        const name = newName.toLowerCase()
       
-        const name = newName
         const number = newNumber
-        console.log(name)
-        const findPerson = persons.find(p => p.name === name)
+        const findPerson = persons.find(p => p.name.toLowerCase() === name)
         const returnedId = findPerson.id
         const changedPerson = {...returnedId, name, number}
         
@@ -76,8 +72,18 @@ const App = () => {
         personService
           .updatePerson(returnedId, changedPerson)
           .then(response => {
-            console.log("Done")
+            const filtered = persons.map(person => person.id != returnedId ? returnedId : response.data)
+            console.log(filtered)
+          
+            setPersons(filtered)
+            setSuccessMessage(
+              ` '${response.data.name}' was updated succesfully to the server`
+            )
+            setTimeout(() => {
+              setSuccessMessage(null)
+            }, 11000)
           })
+          
 
        
 
@@ -85,17 +91,19 @@ const App = () => {
       }
       
     }
-    if(!personResult && !numberResult)
+    if(!personResult)
     {
       console.log("Ei löydy listalta, lisätään....")
       personService
         .createPerson(personObject)
         .then(response => {
+          console.log(response.data)
           setPersons(persons.concat(response.data))
+
           setNewPerson('')
 
           setSuccessMessage(
-            `Note '${personObject}' was added succesfully to the server`
+            ` '${response.data.name}' was added succesfully to the server`
           )
           setTimeout(() => {
             setSuccessMessage(null)
@@ -110,21 +118,29 @@ const App = () => {
 
   const handleDelete = (event) => {
     const id = event.target.value
-    const deletedPerson = [...id]
-    console.log(deletedPerson)
+    console.log(id)
 
       if (window.confirm("Are you sure you want to delete " + id))
       {
         personService
-      .deletePerson(deletedPerson)
+      .deletePerson(id)
       .then(response => {
-       const filtered = persons.filter(person => person.id != deletedPerson)
-        setPersons(filtered)
+        const successMessage = persons.find(person => person.id)
+        console.log(successMessage, "Tässä on ihmiset")
+
+        const poistettu = successMessage.name
+        console.log(poistettu)
+
+        setSuccessMessage(
+          ` '${poistettu}' was deleted succesfully to the server`
+        )
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 11000)
+        const filtered = persons.filter(person => person.id != id)
+        setPersons(filtered)   
       })
     }
-
-
-
   }
 
 

@@ -1,39 +1,9 @@
 {
   "persons": [
     {
-      "name": "Mikko Alatalo",
-      "number": "92",
+      "name": "mikko alatalo",
+      "number": "21",
       "id": 1
-    },
-    {
-      "name": "Herra Esimerkki",
-      "number": "999",
-      "id": 2
-    },
-    {
-      "name": "Esko-Pekka",
-      "number": "92",
-      "id": 3
-    },
-    {
-      "name": "Matti-Pekko",
-      "number": "333",
-      "id": 5
-    },
-    {
-      "name": "Matti Esko",
-      "number": "99",
-      "id": 6
-    },
-    {
-      "name": "Mikko Alatalon veli",
-      "number": "33",
-      "id": 7
-    },
-    {
-      "name": "asd",
-      "number": "afsd",
-      "id": 8
     }
   ]
 }

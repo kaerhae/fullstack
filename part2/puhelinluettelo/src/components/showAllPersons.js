@@ -1,17 +1,17 @@
 import React from 'react'
 
-const ShowPerson = ({persons, onClickHandler, newSearch}) => {
+const ShowPerson = (props) => {
 
 
  
     return (
 
         <ul>
-        {persons.filter(person => 
-          person.name.toLowerCase().includes(newSearch.toLowerCase())).map(user => 
-          <li value={user.id} key={user.id}>
+        {props.persons.filter(person => 
+          person.name.toLowerCase().includes(props.newSearch.toLowerCase())).map(user => 
+          <li value={user.id} key={user.id} style={{textTransform: 'capitalize'}}>
             {user.name} {user.number} 
-          <button value={user.id} onClick={onClickHandler}>
+          <button value={user.id} onClick={props.onClickHandler}>
             Delete
           </button>
           </li>)} 
