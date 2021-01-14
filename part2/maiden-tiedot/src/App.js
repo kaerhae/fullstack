@@ -25,16 +25,11 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setNewSearch(event.target.value)
-    const res = countries.filter(land => land.name.toLowerCase().includes(newSearch.toLowerCase())).map(country => <li key={country.name}>{country.name}</li>)
+    const res = countries.filter(land => land.name.toLowerCase().includes(newSearch.toLowerCase())).map(country => <div><li key={country.name}>{country.name}</li><button>Show</button></div>)
     setFounded(res)
 
     
   }
-
-
-  
-  
-
 
   return (
     <div className="">

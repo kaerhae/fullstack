@@ -4,12 +4,7 @@ const Check = (props) => {
 
 
   
-    if (props.founded.length > 10)
-    {
-      return (
-        <p>Too many matches, specify another filter</p>
-      )
-    }
+  
   
     if (props.founded.length < 2 && props.founded.length > 0)
     {

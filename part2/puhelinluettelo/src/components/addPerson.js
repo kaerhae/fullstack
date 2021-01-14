@@ -1,23 +1,23 @@
 import React from 'react'
 
 
-const Add = (props) => {
+const Add = ({onSubmit, nameValue, numberValue, nameHandler, numberHandle}) => {
 
 
     return (
         <div>
-            <form onSubmit={props.onSubmit}>
+            <form onSubmit={onSubmit}>
         <div>
-          Name: <input value={props.nameValue} onChange={props.nameHandler}/>
+          Name: <input value={nameValue} onChange={nameHandler}/>
         </div>
         <div>
-          Phone number: <input value={props.numberValue} onChange={props.numberHandle}/>
+          Phone number: <input value={numberValue} onChange={numberHandle}/>
         </div>
         <div>
           <button type="submit">add</button>
         </div>
       </form>
-        </div>
+      </div>
     )
 }
 
