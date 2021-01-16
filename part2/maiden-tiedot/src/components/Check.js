@@ -2,11 +2,8 @@ import React from 'react'
 
 const Check = (props) => {
 
-
   
-  
-  
-    if (props.founded.length < 2 && props.founded.length > 0)
+    if (props.founded.length <= 1 && props.founded.length > 0)
     {
   
       const header = props.countries.filter(land => land.name.toLowerCase().includes(props.newSearch.toLowerCase())).map(country => <h1 key={country.name}>{country.name}</h1>)

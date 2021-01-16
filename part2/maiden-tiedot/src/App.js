@@ -7,6 +7,16 @@ import Check from './components/Check'
 
 const App = () => {
   
+
+
+  const api_key = process.env.REACT_APP_API_KEY
+
+  // 070c9b88a188f7d6ba73e90462e8c789
+  
+  const api_addr = http://api.weatherstack.com/current?access_key='$api_key'&query=Sweden
+    
+    
+
   const [ countries, setCountries] = useState([]) 
   const [ newSearch, setNewSearch ] = useState('')
   const [ founded, setFounded ] = useState('')
@@ -23,12 +33,36 @@ const App = () => {
   console.log('render', countries.length, 'contries')
 
 
-  const handleFilterChange = (event) => {
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('')
+  })
+
+
+  const handleFilterChange = (event) => 
+  {
     setNewSearch(event.target.value)
-    const res = countries.filter(land => land.name.toLowerCase().includes(newSearch.toLowerCase())).map(country => <div><li key={country.name}>{country.name}</li><button>Show</button></div>)
-    setFounded(res)
+    const result = countries.filter(land => 
+      land.name.toLowerCase().includes(newSearch.toLowerCase())).map(country => 
+      <div>
+        <li key={country.name}>{country.name}</li>
+        <button value={country.name} onClick={handleShowCountry}>Show</button>
+      </div>)
+    setFounded(result)
 
     
+  }
+
+  const handleShowCountry = (event) => {
+
+    const selectedLand = event.target.value
+
+    const result = countries.filter(land => land.name === selectedLand).map(country => country.name)
+
+    setFounded(result)
+
+
   }
 
   return (
