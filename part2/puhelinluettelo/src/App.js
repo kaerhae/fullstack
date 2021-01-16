@@ -13,7 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ newPerson,  setNewPerson ] = useState('')
-  const [ message, setMessage ] = useState(null)
+  const [ message, setMessage ] = useState('')
 
 
 
@@ -75,22 +75,20 @@ const App = () => {
             const filtered = persons.map(person => person.id != returnedId ? returnedId : response.data)
             console.log(filtered)
           
+          
             setPersons(filtered)
-            setMessage(
-              ` '${response.data.name}' was updated succesfully to the server`
-            )
+            const successMessage = ` '${response.data.name}' was updated succesfully to the server`
+            setMessage(successMessage)
             setTimeout(() => {
               setMessage(null)
             }, 11000)
           })
           .catch(error => {
-            setMessage(
-              `Person was already removed from server`
-
-            )
+            const errorMessage = `Person was already removed from server`
+            setMessage(errorMessage)
             setTimeout(() => {
               setMessage(null)
-            }, 5000)
+            }, 11000)
           })
         
       }
@@ -106,10 +104,10 @@ const App = () => {
           setPersons(persons.concat(response.data))
 
           setNewPerson('')
+          const successMessage = ` '${response.data.name}' was added succesfully to the server`
 
-          setMessage(
-            ` '${response.data.name}' was added succesfully to the server`
-          )
+          setMessage(successMessage)
+          console.log(message)
           setTimeout(() => {
             setMessage(null)
           }, 11000)

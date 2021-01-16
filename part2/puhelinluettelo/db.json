@@ -4,6 +4,46 @@
       "name": "mikko alatalo",
       "number": "22",
       "id": 1
+    },
+    {
+      "name": "Spede Pasanen",
+      "number": "99",
+      "id": 2
+    },
+    {
+      "name": "Ville Leinonen",
+      "number": "22",
+      "id": 3
+    },
+    {
+      "name": "Vesa-Matti Loiri",
+      "number": "22",
+      "id": 4
+    },
+    {
+      "name": "Teppo-Heikki",
+      "number": "91",
+      "id": 5
+    },
+    {
+      "name": "Mikko ",
+      "number": "221",
+      "id": 6
+    },
+    {
+      "name": "Tepe",
+      "number": "03",
+      "id": 7
+    },
+    {
+      "name": "Teemu Selänne",
+      "number": "88",
+      "id": 8
+    },
+    {
+      "name": "Mikko Koivu",
+      "number": "2999",
+      "id": 9
     }
   ]
 }

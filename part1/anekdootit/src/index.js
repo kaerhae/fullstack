@@ -11,48 +11,68 @@ const Button = (props) => {
 }
 
 const App = (props) => {
+
+  const pointArray = new Array(6).fill(0)
+
   const [selected, setSelected] = useState(0)
-  const [points, setPoints] = useState([
-    0, 0, 0, 0, 0 ,0
-  ])
+  const [points, setPoint] = useState(pointArray)
+  const [bestVote, setBestVote] = useState(0)
+  
 
 
 
-  const randomAnect = Math.floor(Math.random() * anecdotes.length)
 
   const clickHandler = () => {
-    
-    // Console-komento satunnaisgeneraattorin tarkistusta varten
+    const randomAnect = Math.floor(Math.random() * anecdotes.length)
+
     const newSelected = anecdotes[randomAnect]
+    // Console-komento satunnaisgeneraattorin tarkistusta varten
+
+
     console.log(newSelected)
     console.log(randomAnect)
 
     setSelected(randomAnect)
-  }
-
-  const handleVote = (props) => {
-
-    const valittuPoint = points[selected]
-    const newVote = {
-      ...points,
-      valittuPoint: points += 1
-    }
-
-    setPoints(newVote)
-
-
 
   }
+
+
+  const handleVote = () => {
+
+    let copy = [...points]
+    copy[selected] += 1
+    setPoint(copy)
+
+    console.log(points)
+
+    console.log(Math.max(...points))
+
+    const mostVotes = Math.max(...points)
+    const findIndex = points.findIndex(point => point === mostVotes)
+    setBestVote(findIndex)
+  }
+
+  
+ 
 
   return (
     <div>
-      {props.anecdotes[selected]}
-      <div>This has {points[selected]} votes</div>
-      <Button text="Vote" onClick={handleVote} />
+      <h1>Anecdote of the day</h1>
+      {anecdotes[selected]}
+
+     
+      <p>This anecdote has {points[selected]} votes</p>
       <Button text="Next anecdote" onClick={clickHandler}/>
+      <Button text="Vote" onClick={handleVote} />
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[bestVote]}</p>
+     
     </div>
   )
 }
+
+
+
 
 const anecdotes = [
   'If it hurts, do it more often',
@@ -62,8 +82,6 @@ const anecdotes = [
   'Premature optimization is the root of all evil.',
   'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
 ]
-
-const points = [0, 0, 0, 0, 0, 0]
 
 
 
