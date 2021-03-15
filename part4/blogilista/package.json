@@ -21,6 +21,7 @@
     "next": "^10.0.8"
   },
   "devDependencies": {
+    "bcrypt": "^5.0.1",
     "eslint": "^7.22.0",
     "eslint-plugin-react": "^7.22.0",
     "lodash": "^4.17.21",
