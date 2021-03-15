@@ -24,6 +24,7 @@
     "bcrypt": "^5.0.1",
     "eslint": "^7.22.0",
     "eslint-plugin-react": "^7.22.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.3"

@@ -19,6 +19,12 @@ const errorHandler = (error, request, response, next) => {
     return response.status(400).send({ error: 'malformatted id' })
   }
 
+  else if (error.name === 'JsonWebTokenError') {
+    return response.status(401).json({
+      error: 'Invalid token'
+    })
+  }
+
   next(error)
 }
 
