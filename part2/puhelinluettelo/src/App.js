@@ -13,9 +13,7 @@ const App = () => {
   const [ newNumber, setNewNumber ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ newPerson,  setNewPerson ] = useState('')
-  const [ message, setMessage ] = useState('')
-
-
+  const [ message, setMessage ] = useState(null)
 
   useEffect(() =>  {
     personService
@@ -24,10 +22,6 @@ const App = () => {
         setPersons(response.data)
       })
 }, [])
-
-  console.log('render', persons.length, 'notes')
-
-
 
   const handleNameChange = (event) => {
     console.log(event.target.value)
@@ -41,41 +35,31 @@ const App = () => {
 
   const handleFilterChange = (event) => {
     setNewSearch(event.target.value)
-    
   }
-
 
   const handleSubmit = (event) => {
     event.preventDefault()
-
     const personResult = persons.find( ({ name }) => 
     name.toLowerCase() === newName.toLowerCase())
     const personObject = 
     {
       name: newName,
       number: newNumber,
-     
     }    
     if(personResult)
     {
-      console.log("Miksi me ollaan täällä?")
       if(window.confirm("Haluatko lisätä uuden numeron henkilölle?"))
       { 
         const name = newName.toLowerCase()
-      
         const number = newNumber
         const findPerson = persons.find(p => p.name.toLowerCase() === name)
         const returnedId = findPerson.id
         const changedPerson = {...returnedId, name, number}
         
-
         personService
           .updatePerson(returnedId, changedPerson)
           .then(response => {
-            const filtered = persons.map(person => person.id != returnedId ? returnedId : response.data)
-            console.log(filtered)
-          
-          
+            const filtered = persons.map(person => person.id != returnedId ? returnedId : response.data)         
             setPersons(filtered)
             const successMessage = ` '${response.data.name}' was updated succesfully to the server`
             setMessage(successMessage)
@@ -90,9 +74,7 @@ const App = () => {
               setMessage(null)
             }, 11000)
           })
-        
       }
-      
     }
     if(!personResult)
     {
@@ -100,14 +82,10 @@ const App = () => {
       personService
         .createPerson(personObject)
         .then(response => {
-          console.log(response.data)
           setPersons(persons.concat(response.data))
-
           setNewPerson('')
           const successMessage = ` '${response.data.name}' was added succesfully to the server`
-
           setMessage(successMessage)
-          console.log(message)
           setTimeout(() => {
             setMessage(null)
           }, 11000)
@@ -115,27 +93,26 @@ const App = () => {
 
         })
     }
-
 }
+
 
 
   const handleDelete = (event) => {
     const id = event.target.value
-    console.log(id)
+    const pid = persons.filter(n => {
+      return n.id === id
+    })
 
-      if (window.confirm("Are you sure you want to delete " + id))
+    const pName = pid.map(n => n.name)
+
+      if (window.confirm("Are you sure you want to delete " + pName))
       {
         personService
       .deletePerson(id)
       .then(response => {
-        const successMessage = persons.find(person => person.id)
-        console.log(successMessage, "Tässä on ihmiset")
-
-        const poistettu = successMessage.name
-        console.log(poistettu)
-
+        
         setMessage(
-          ` '${poistettu}' was deleted succesfully to the server`
+          ` '${pName}' was deleted succesfully from the server`
         )
         setTimeout(() => {
           setMessage(null)
