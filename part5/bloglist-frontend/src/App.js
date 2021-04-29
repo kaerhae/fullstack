@@ -62,11 +62,27 @@ const App = () => {
       console.log(update)
       const newBlogs = blogs.map(b => b.id !== update.id ? b : update)
       const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
-
       setBlogs(sortBlogs)
     } catch (e) {
       console.log(e)
     }
+  }
+
+  const removeBlog = async (id) => {
+    
+    if (window.confirm("Are you sure you want to delete?")) {
+    try {
+      const remove = await blogService.remove(
+        id
+      )
+      console.log(remove)
+      const newBlogs = blogs.filter(b => b.id != id)
+      const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortBlogs)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   }
 
   const handleLogin = async (event) => {
@@ -133,7 +149,13 @@ const App = () => {
 
       {blogForm()}
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} blogs={blogs} updateBlog={updateBlog}/>
+        <Blog 
+        key={blog.id} 
+        blog={blog} 
+        user={user} 
+        updateBlog={updateBlog}
+        removeBlog={removeBlog}
+        />
       )}
     </div>
     }
