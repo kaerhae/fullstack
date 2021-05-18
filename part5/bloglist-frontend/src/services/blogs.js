@@ -22,7 +22,7 @@ const create = async newObject => {
 
 const update = async (newObject, id) => {
   const config = {
-    headers: { Authorization: token},
+    headers: { Authorization: token },
   }
   const urlById = baseUrl + id
   const response = await axios.put(urlById, newObject, config)
@@ -31,7 +31,7 @@ const update = async (newObject, id) => {
 
 const remove = async (id) => {
   const config = {
-    headers: { Authorization: token},
+    headers: { Authorization: token },
   }
   const urlById = baseUrl + id
   const response = await axios.delete(urlById, config)

@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const AddBlog = ({ createBlog }) => {
+const AddBlog = ({
+  createBlog
+}) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ url, setUrl ] = useState('')
-  
+
   const urlOnChange = (event) => {
     setUrl(event.target.value)
   }
@@ -29,34 +32,37 @@ const AddBlog = ({ createBlog }) => {
 
   return (
     <div>
-        <form onSubmit={addBlog}>
-          <div>Title 
-            <input
+      <form onSubmit={addBlog}>
+        <div>Title
+          <input
             type="text"
             value={title}
             name="title"
             onChange={titleOnChange}
-            />
-          </div>
-          <div>URL 
-            <input
+          />
+        </div>
+        <div>URL
+          <input
             type="text"
             value={url}
             onChange={urlOnChange}
-            />
-            </div>
-          <div>Author 
-            <input
+          />
+        </div>
+        <div>Author
+          <input
             type="text"
             value={author}
             onChange={authorOnChange}
-            />
-            </div>
-            <button type="submit">Add New Blog</button>
-        </form>
+          />
+        </div>
+        <button type="submit">Add New Blog</button>
+      </form>
     </div>
   )
 }
 
+AddBlog.propTypes = {
+  createBlog: PropTypes.func.isRequired
+}
 
 export default AddBlog
