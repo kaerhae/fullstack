@@ -1,16 +1,21 @@
-import React, { useReducer } from 'react'
+import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
+import { prettyDOM } from '@testing-library/dom';
+
+
 
 describe('Blog-komponentti', () => {
   let component
-  let mockhandler = jest.fn()
+  const mockToggleView = jest.fn()
+  const mockHandleLike = jest.fn()
+
   const blog = {
     title: "Testiotsikko",
     author: "Testimies",
-    url: "",
-    likes: "",
+    url: "www.testi.fi",
+    likes: 3,
     user: {
       name:"Testimies"
     }
@@ -25,79 +30,51 @@ describe('Blog-komponentti', () => {
       <Blog
         blog={blog}
         user={user}
-        addBlog={mockhandler}
-        removeBlog={mockhandler}
-        toggleView={mockhandler}
+        toggleView={mockToggleView}
+        updateBlog={mockHandleLike}
       />
     )
   })
 
   test('Renders only blog title and author by default, not url and likes', () => {
-    expect(
-      component.container
-    ).toHaveTextContent(blog.title)
+    
 
-    expect(
-      component.container
-    ).toHaveTextContent(blog.author)
+    const title = component.getByText(
+      'Testiotsikko'
+    )
+    expect(title).toBeDefined()
 
-    expect(
-      component.container
-    ).not.toHaveTextContent(blog.url)
+    const author = component.getByText(
+      'Testimies'
+    )
+    expect(author).toBeDefined()
 
-    expect(
-      component.container
-    ).not.toHaveTextContent(blog.likes)
   })
+
+  test('Check that urls and likes are not showed', () => {
+    const hiddenDiv = component.container.querySelector('.blog-item-hidden')
+    expect(hiddenDiv).toHaveStyle('display: none')
+  })
+
+  test('Urls and likes are showed, when button is pressed', () => {
+    const viewButton = component.getByText('View')
+    fireEvent.click(viewButton)
+
+    const hiddenDiv = component.container.querySelector('.blog-item-hidden')
+    expect(hiddenDiv).not.toHaveStyle('display: none')
+  })
+
+  test('When clicked twice, like button eventhandler gets called twice', () => {
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(mockHandleLike.mock.calls).toHaveLength(2)
+    console.log(prettyDOM(likeButton))
+
+  
+  })
+
+  
 
 })
-
-
-  describe('Blog-komponentti', () => {
-    let component
-    let mockhandlerLike = jest.fn()
-    const blog = {
-      title: "Testiotsikko",
-      author: "Testimies",
-      url: "www.testi.fi",
-      likes: 3,
-      user: {
-        name:"Testimies"
-      }
-    }
-  
-    const user = {
-      name: "Testimies"
-    }
-  
-    beforeEach(() => {
-      component = render(
-        <Blog
-          blog={blog}
-          user={user}
-          toggleView={mockhandlerLike}
-        />
-      )
-    })
-
-    test('Show url and likes, when button pressed', () => {
-      const button = component.getByText('View')
-      fireEvent.click(button)
-  
-  
-      expect(
-        component.container
-      ).toHaveTextContent(blog.url)
-      expect(
-        component.container
-      ).toHaveTextContent(blog.likes)
-    })
-
-    test('When like button pressed two times, event handler get called two times', () => {
-      const viewButton = component.getByText('View')
-      fireEvent.click(viewButton)
-      
-
-      expect(mockhandlerLike.mock.calls).toHaveLength(1)
-    })
-  })

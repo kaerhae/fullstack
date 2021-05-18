@@ -31,11 +31,11 @@ const Blog = ({ blog, user, updateBlog, removeBlog }) => {
 
     <div className="blogContainer">
 
-      <div className="blog-item"><i>{blog.title}</i><button onClick={toggleView}>View</button></div>
-      <div className="blog-item" style={toggleInfo}>{blog.url}</div>
-      <div className="blog-item" style={toggleInfo}>Likes: {blog.likes}<button value={blog.id} onClick={handleLike}>Like</button></div>
-      <div className="blog-item" style={toggleInfo}>{blog.author}</div>
-      <div className="blog-item" style={toggleInfo}>Blog added by: {blog.user.name}</div>
+      <div className="blog-item-visible"><i>{blog.title}</i><button onClick={toggleView}>View</button></div>
+      <div className="blog-item-hidden" style={toggleInfo}>{blog.url}</div>
+      <div className="blog-item-hidden" style={toggleInfo}>Likes: {blog.likes}<button className="button-like" value={blog.id} onClick={handleLike}>Like</button></div>
+      <div className="blog-item-hidden" style={toggleInfo}>{blog.author}</div>
+      <div className="blog-item-hidden" style={toggleInfo}>Blog added by: {blog.user.name}</div>
       {
         user.name === blog.user.name &&
         <button value={blog.id} onClick={handleDelete}>Remove</button>
@@ -59,7 +59,8 @@ Blog.propTypes = {
     username: PropTypes.string.isRequired
   }),
   updateBlog: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired
+  removeBlog: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired
 }
 
 export default Blog
