@@ -108,7 +108,7 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setLoginVisible(true)}>Create New Blog</button>
+          <button className="create-button" onClick={() => setLoginVisible(true)}>Create New Blog</button>
         </div>
         <div style={showWhenVisible}>
           <AddBlog
@@ -136,7 +136,7 @@ const App = () => {
           <h2>Blogs</h2>
           <p>
             Logged in as {user.name}
-            <button className="log-button" onClick={handleLogout}>Logout</button>
+            <button id='logout-button' className="log-button" onClick={handleLogout}>Logout</button>
           </p>
 
           {blogForm()}

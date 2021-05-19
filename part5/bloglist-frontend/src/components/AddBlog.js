@@ -58,7 +58,7 @@ const AddBlog = ({
             onChange={authorOnChange}
           />
         </div>
-        <button type="submit">Add New Blog</button>
+        <button className="add-button" type="submit">Add New Blog</button>
       </form>
     </div>
   )
