@@ -31,14 +31,14 @@ const Blog = ({ blog, user, updateBlog, removeBlog }) => {
 
     <div className="blogContainer">
 
-      <div className="blog-item-visible"><i>{blog.title}</i><button onClick={toggleView}>View</button></div>
+      <div className="blog-item-visible"><i>{blog.title}</i><button id='view-button' onClick={toggleView}>View</button></div>
       <div className="blog-item-hidden" style={toggleInfo}>{blog.url}</div>
       <div className="blog-item-hidden" style={toggleInfo}>Likes: {blog.likes}<button className="button-like" value={blog.id} onClick={handleLike}>Like</button></div>
       <div className="blog-item-hidden" style={toggleInfo}>{blog.author}</div>
       <div className="blog-item-hidden" style={toggleInfo}>Blog added by: {blog.user.name}</div>
       {
         user.name === blog.user.name &&
-        <button value={blog.id} onClick={handleDelete}>Remove</button>
+        <button id='button-remove' value={blog.id} onClick={handleDelete}>Remove</button>
       }
     </div>
 
