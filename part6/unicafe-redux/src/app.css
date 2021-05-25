@@ -1,0 +1,22 @@
+body {
+  text-align: center;
+}
+
+.buttons {
+  padding: 55px;
+}
+
+.buttons button, .button-clear {
+  padding: 8px 40px;
+  margin: 14px 12px;
+}
+
+.result {
+  font-size: 50px;
+}
+
+.result-good, .result-ok, .result-bad {
+  border: 1px black solid;
+}
+
+

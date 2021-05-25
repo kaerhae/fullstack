@@ -1,0 +1,5 @@
+{
+  "devDependencies": {
+    "deepfreeze": "^2.0.0"
+  }
+}
