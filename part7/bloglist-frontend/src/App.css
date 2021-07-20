@@ -1,0 +1,36 @@
+.message {
+  color: rgb(0, 0, 0);
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.App {
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.log-button {
+  margin: 1%
+}
+
+.blogContainer {
+  border: 1px solid black;
+  margin: 2vh;
+  text-align: left;
+}
+
+.blog-item {
+  margin:1%;
+}
+
+.blog-item-hidden {
+  margin: 1%;
+}
+
+.blogContainer button {
+  margin-left: 1vw;
+}

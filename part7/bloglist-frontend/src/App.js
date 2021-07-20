@@ -1,0 +1,165 @@
+import React, { useState, useEffect } from 'react'
+import Blog from './components/Blog'
+import blogService from './services/blogs'
+import loginService from './services/login'
+import Notification from './components/Notification'
+import AddBlog from './components/AddBlog'
+import LoginForm from './components/LoginForm'
+import { setNotification } from './reducers/NotificationReducer'
+import { connect } from 'react-redux'
+import './App.css'
+
+
+const App = (props) => {
+  const [ blogs, setBlogs ] = useState([])
+  const [ username, setUsername ] = useState('')
+  const [ password, setPassword ] = useState('')
+  const [ user, setUser] = useState(null)
+  const [ loginVisible, setLoginVisible ] = useState(false)
+
+  useEffect(() => {
+    blogService.getAll().then(blogs => {
+      const sortBlogs = blogs.sort((a, b) => b.likes - a.likes)
+      setBlogs( sortBlogs )
+    })
+  },[])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('LoggedInBlogAppUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
+    }
+  }, [])
+
+  const handleLogout = () => {
+    window.localStorage.clear()
+    setUser(null)
+  }
+
+  const addBlog = async (newObject) => {
+    try {
+      const add = await blogService.create(newObject)
+      setBlogs(blogs.concat(add))
+      props.setNotification('New blog created!')
+    } catch (e) {
+      props.setNotification('Error', e)
+    }
+    setLoginVisible(false)
+  }
+
+  const updateBlog = async (newObject, id) => {
+    try {
+      const update = await blogService.update(
+        newObject, id
+      )
+      console.log(update)
+      const newBlogs = blogs.map(b => b.id !== update.id ? b : update)
+      const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
+      setBlogs(sortBlogs)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const removeBlog = async (id) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      try {
+        const remove = await blogService.remove(id)
+        console.log(remove)
+        const newBlogs = blogs.filter(b => b.id !== id)
+        const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
+        setBlogs(sortBlogs)
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
+
+  const handleLogin = async (event) => {
+    event.preventDefault()
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+      window.localStorage.setItem('LoggedInBlogAppUser', JSON.stringify(user))
+      console.log('User = ', JSON.stringify(user))
+      setUser(user)
+      setUsername('')
+      setPassword('')
+
+    } catch (exception) {
+      props.setNotification('Wrong Username or Password')
+    }
+  }
+
+
+  const blogForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button className="create-button" onClick={() => setLoginVisible(true)}>Create New Blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <AddBlog
+            createBlog={addBlog}
+          />
+          <button onClick={() => setLoginVisible(false)}>Cancel</button>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="App">
+      <Notification />
+      {user === null ?
+        <LoginForm
+          username={username}
+          password={password}
+          handleLogin={handleLogin}
+          setUsername={setUsername}
+          setPassword={setPassword}
+          loginVisible={loginVisible}
+        /> :
+        <div>
+          <h2>Blogs</h2>
+          <p>
+            Logged in as {user.name}
+            <button id='logout-button' className="log-button" onClick={handleLogout}>Logout</button>
+          </p>
+
+          {blogForm()}
+          {blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={user}
+              updateBlog={updateBlog}
+              removeBlog={removeBlog}
+            />
+          )}
+        </div>
+      }
+    </div>
+  )
+}
+
+const mapDispatchToProps = {
+  setNotification
+}
+
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
