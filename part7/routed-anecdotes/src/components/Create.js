@@ -1,13 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useField } from '../hooks'
 import { useHistory } from 'react-router-dom'
 
 const CreateNew = (props) => {
-  const content = useField('text')
-  const author = useField('text')
-  const info = useField('text')
-  const resetting = useField('')
-
+  const { content, clearContent }  = useField('text')
+  const { author, clearAuthor } = useField('text')
+  const { info, clearInfo } = useField('text')
   let history = useHistory()
 
   const handleSubmit = (e) => {
@@ -19,6 +17,13 @@ const CreateNew = (props) => {
       votes: 0
     })
     history.push('/anecdotes')    
+  }
+
+  const clearSubmit = (e) => {
+    e.preventDefault()
+    clearContent.resetForm()
+    clearAuthor.resetForm()
+    clearInfo.resetForm()
   }
 
   
@@ -39,7 +44,7 @@ const CreateNew = (props) => {
           <input {...info}/>
         </div>
           <button onClick={handleSubmit}>create</button>
-          <button >Reset</button>
+          <button onClick={clearSubmit}>Reset</button>
       </form>
       
 
