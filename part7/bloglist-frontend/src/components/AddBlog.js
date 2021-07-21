@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import blogService from './../services/blogs'
 import PropTypes from 'prop-types'
-
-const AddBlog = ({
-  createBlog
-}) => {
+import { connect } from 'react-redux'
+import { setNotification } from '../reducers/NotificationReducer'
+import { createBlog } from '../reducers/BlogReducer'
+const AddBlog = (props) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ url, setUrl ] = useState('')
@@ -18,16 +19,22 @@ const AddBlog = ({
     setAuthor(event.target.value)
   }
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    createBlog({
-      title: title,
-      url: url,
-      author:author
-    })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+  const addBlog = async (e) => {
+    e.preventDefault()
+    try {
+      const newObject = {
+        title: title,
+        url: url,
+        author:author
+      }
+      const add = await blogService.create(newObject)
+      console.log('hi')
+      props.createBlog(add)
+      props.setNotification('A New Blog Added!', 4)
+    } catch (e) {
+      props.setNotification(`Error: ${e}`, 4)
+    }
+    props.setLoginVisible(false)
   }
 
   return (
@@ -68,4 +75,18 @@ AddBlog.propTypes = {
   createBlog: PropTypes.func.isRequired
 }
 
-export default AddBlog
+const mapDispatchToProps = {
+  setNotification,
+  createBlog
+}
+
+const mapStateToProps = (state) => {
+  return {
+    notification: state.notification
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddBlog)

@@ -1,15 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const Notification = ({ message }) => {
+const Notification = ( props ) => {
 
-  if (!message) {
+  if (!props.notification) {
     return null
   }
 
   return (
     <div className="message">
-      {message}
+      {props.notification}
     </div>
   )
 }

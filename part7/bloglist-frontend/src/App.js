@@ -6,23 +6,22 @@ import Notification from './components/Notification'
 import AddBlog from './components/AddBlog'
 import LoginForm from './components/LoginForm'
 import { setNotification } from './reducers/NotificationReducer'
-import { connect } from 'react-redux'
+import { connect, useDispatch } from 'react-redux'
+import { initBlogs } from './reducers/BlogReducer'
 import './App.css'
 
 
 const App = (props) => {
-  const [ blogs, setBlogs ] = useState([])
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ user, setUser] = useState(null)
   const [ loginVisible, setLoginVisible ] = useState(false)
 
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    blogService.getAll().then(blogs => {
-      const sortBlogs = blogs.sort((a, b) => b.likes - a.likes)
-      setBlogs( sortBlogs )
-    })
-  },[])
+    dispatch(initBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('LoggedInBlogAppUser')
@@ -38,45 +37,6 @@ const App = (props) => {
     setUser(null)
   }
 
-  const addBlog = async (newObject) => {
-    try {
-      const add = await blogService.create(newObject)
-      setBlogs(blogs.concat(add))
-      props.setNotification('New blog created!')
-    } catch (e) {
-      props.setNotification('Error', e)
-    }
-    setLoginVisible(false)
-  }
-
-  const updateBlog = async (newObject, id) => {
-    try {
-      const update = await blogService.update(
-        newObject, id
-      )
-      console.log(update)
-      const newBlogs = blogs.map(b => b.id !== update.id ? b : update)
-      const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
-      setBlogs(sortBlogs)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  const removeBlog = async (id) => {
-    if (window.confirm('Are you sure you want to delete?')) {
-      try {
-        const remove = await blogService.remove(id)
-        console.log(remove)
-        const newBlogs = blogs.filter(b => b.id !== id)
-        const sortBlogs = newBlogs.sort((a, b) => b.likes - a.likes)
-        setBlogs(sortBlogs)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-  }
-
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
@@ -90,7 +50,8 @@ const App = (props) => {
       setPassword('')
 
     } catch (exception) {
-      props.setNotification('Wrong Username or Password')
+      console.log('Ei')
+      props.setNotification('Wrong Username or Password', 5)
     }
   }
 
@@ -106,7 +67,7 @@ const App = (props) => {
         </div>
         <div style={showWhenVisible}>
           <AddBlog
-            createBlog={addBlog}
+            setLoginVisible={setLoginVisible}
           />
           <button onClick={() => setLoginVisible(false)}>Cancel</button>
         </div>
@@ -134,15 +95,9 @@ const App = (props) => {
           </p>
 
           {blogForm()}
-          {blogs.map(blog =>
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-              updateBlog={updateBlog}
-              removeBlog={removeBlog}
-            />
-          )}
+          <Blog
+            user={user}
+          />
         </div>
       }
     </div>
