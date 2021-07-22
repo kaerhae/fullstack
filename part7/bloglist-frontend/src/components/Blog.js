@@ -15,20 +15,18 @@ const Blog = (props) => {
   const handleLike = async (e) => {
     e.preventDefault()
     try {
-      const newObject = {
-        title: blog.title,
-        id: blog.id,
-        likes: (blog.likes += 1),
-        author: blog.author,
-        url: blog.url
-      }
       const id = e.target.value
-      await blogService.update(newObject, id)
+      const likedBlog = props.blogs.find(b => b.id === id)
+      const blog = {
+        ...likedBlog,
+        likes: likedBlog.likes + 1
+      }
+      await blogService.update(blog, id)
       props.likeBlog(id)
     }catch (e) {
       console.log('Error')
     }
-  } 
+  }
 
   const handleDelete = async (e) => {
     e.preventDefault()
@@ -36,7 +34,7 @@ const Blog = (props) => {
       try {
         const id = e.target.value
         await blogService.remove(id)
-        removeBlog(id)
+        props.removeBlog(id)
       } catch (e) {
         console.log(e)
       }
@@ -44,27 +42,22 @@ const Blog = (props) => {
   }
 
   return (
-    <div>
+    <div className="blogContainer">
+
+      <div className="blog-item-visible"><i>{props.blog.title}</i><button id='view-button' onClick={toggleView}>View</button></div>
+      <div className="blog-item-hidden" style={toggleInfo}>{props.blog.url}</div>
+      <div className="blog-item-hidden" style={toggleInfo}>Likes: {props.blog.likes}<button className="button-like" value={props.blog.id} onClick={handleLike}>Like</button></div>
+      <div className="blog-item-hidden" style={toggleInfo}>{props.blog.author}</div>
+      <div className="blog-item-hidden" style={toggleInfo}>Blog added by: {props.blog.user.name}</div>
       {
-        props.blogs.map(blog =>
-          <div className="blogContainer" key={blog.id}>
-            <div className="blog-item-visible"><i>{blog.title}</i><button id='view-button' onClick={toggleView}>View</button></div>
-            <div className="blog-item-hidden" style={toggleInfo}>{blog.url}</div>
-            <div className="blog-item-hidden" style={toggleInfo}>Likes: {blog.likes}<button className="button-like" value={blog.id} onClick={likeBlog}>Like</button></div>
-            <div className="blog-item-hidden" style={toggleInfo}>{blog.author}</div>
-            <div className="blog-item-hidden" style={toggleInfo}>Blog added by: {blog.user.name}</div>
-            {
-              props.user.name === blog.user.name &&
-              <button
-                id='button-remove'
-                value={blog.id}
-                onClick={handleDelete}
-              >
-                Remove
-              </button>
-            }
-          </div>
-        )
+        props.user.name === props.blog.user.name &&
+        <button
+          id='button-remove'
+          value={props.blog.id}
+          onClick={handleDelete}
+        >
+          Remove
+        </button>
       }
     </div>
   )

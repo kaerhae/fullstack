@@ -6,5 +6,6 @@ let SECRET = process.env.SECRET
 
 module.exports = {
   MONGODB,
-  PORT
+  PORT,
+  SECRET
 }

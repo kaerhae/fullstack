@@ -3,19 +3,18 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
-import AddBlog from './components/AddBlog'
 import LoginForm from './components/LoginForm'
 import { setNotification } from './reducers/NotificationReducer'
+import { setUser } from './reducers/UserReducer'
 import { connect, useDispatch } from 'react-redux'
 import { initBlogs } from './reducers/BlogReducer'
 import './App.css'
+import BlogForm from './components/BlogForm'
 
 
 const App = (props) => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
-  const [ user, setUser] = useState(null)
-  const [ loginVisible, setLoginVisible ] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -27,14 +26,14 @@ const App = (props) => {
     const loggedUserJSON = window.localStorage.getItem('LoggedInBlogAppUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      props.setUser(user)
       blogService.setToken(user.token)
     }
   }, [])
 
   const handleLogout = () => {
     window.localStorage.clear()
-    setUser(null)
+    props.setUser('')
   }
 
   const handleLogin = async (event) => {
@@ -45,7 +44,7 @@ const App = (props) => {
       })
       window.localStorage.setItem('LoggedInBlogAppUser', JSON.stringify(user))
       console.log('User = ', JSON.stringify(user))
-      setUser(user)
+      props.setUser(user)
       setUsername('')
       setPassword('')
 
@@ -56,48 +55,32 @@ const App = (props) => {
   }
 
 
-  const blogForm = () => {
-    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
-    const showWhenVisible = { display: loginVisible ? '' : 'none' }
-
-    return (
-      <div>
-        <div style={hideWhenVisible}>
-          <button className="create-button" onClick={() => setLoginVisible(true)}>Create New Blog</button>
-        </div>
-        <div style={showWhenVisible}>
-          <AddBlog
-            setLoginVisible={setLoginVisible}
-          />
-          <button onClick={() => setLoginVisible(false)}>Cancel</button>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <div className="App">
       <Notification />
-      {user === null ?
+      {!props.user ?
         <LoginForm
           username={username}
           password={password}
           handleLogin={handleLogin}
           setUsername={setUsername}
           setPassword={setPassword}
-          loginVisible={loginVisible}
         /> :
         <div>
           <h2>Blogs</h2>
           <p>
-            Logged in as {user.name}
+            Logged in as {props.user.name}
             <button id='logout-button' className="log-button" onClick={handleLogout}>Logout</button>
           </p>
 
-          {blogForm()}
-          <Blog
-            user={user}
-          />
+          <BlogForm />
+          {props.blogs.map(blog =>
+            <Blog
+              key={blog.id}
+              blog={blog}
+              user={props.user}
+            />
+          )}
         </div>
       }
     </div>
@@ -105,14 +88,18 @@ const App = (props) => {
 }
 
 const mapDispatchToProps = {
-  setNotification
+  setNotification,
+  setUser
 }
 
 const mapStateToProps = (state) => {
   return {
-    notification: state.notification
+    notification: state.notification,
+    blogs: state.blogs,
+    user: state.user
   }
 }
+
 
 export default connect(
   mapStateToProps,

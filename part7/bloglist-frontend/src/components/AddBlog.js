@@ -34,7 +34,7 @@ const AddBlog = (props) => {
     } catch (e) {
       props.setNotification(`Error: ${e}`, 4)
     }
-    props.setLoginVisible(false)
+    props.setFormVisible(false)
   }
 
   return (
