@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import blogService from './../services/blogs'
 import PropTypes from 'prop-types'
+import { TextField, Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { setNotification } from '../reducers/NotificationReducer'
 import { createBlog } from '../reducers/BlogReducer'
@@ -40,8 +41,9 @@ const AddBlog = (props) => {
   return (
     <div>
       <form className="blog-form" onSubmit={addBlog}>
-        <div>Title
-          <input
+        <div>
+          <TextField
+            label="Title"
             className="title"
             type="text"
             value={title}
@@ -49,23 +51,28 @@ const AddBlog = (props) => {
             onChange={titleOnChange}
           />
         </div>
-        <div>URL
-          <input
+        <div>
+          <TextField
+            label="URL"
             className="url"
             type="text"
             value={url}
             onChange={urlOnChange}
           />
         </div>
-        <div>Author
-          <input
+        <div>
+          <TextField
+            label="Author"
             className="author"
             type="text"
             value={author}
             onChange={authorOnChange}
           />
         </div>
-        <button className="add-button" type="submit">Add New Blog</button>
+        <div>
+          <Button className="add-button" style={{ background: 'black', color: 'white', margin: '5px' }} type="submit">Add New Blog</Button>
+          <Button type="button" style={{ background: 'black', color: 'white', margin:'5px' }} onClick={() => props.setFormVisible(false)}>Cancel</Button>
+        </div>
       </form>
     </div>
   )

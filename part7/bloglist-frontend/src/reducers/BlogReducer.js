@@ -16,6 +16,21 @@ const blogReducer = ( state = [], action ) => {
     )
     return newBlogs.sort((a, b) => b.likes - a.likes)
   }
+  case 'COMMENT': {
+    const id = action.data.id
+    const content = action.data.content
+    console.log(id)
+    console.log(content)
+    const changingBlog = state.find(b => b.id === id)
+    const blog = {
+      ...changingBlog,
+      comments: changingBlog.comments.concat(content)
+    }
+    const newBlogs = state.map(b =>
+      b.id !== id ? b : blog
+    )
+    return newBlogs
+  }
   case 'REMOVE': {
     const removableID = action.data.id
     const removableBlog = state.filter(b => b.id !== removableID)
@@ -49,6 +64,13 @@ export const likeBlog = (id) => {
   return {
     type: 'LIKE',
     data: { id }
+  }
+}
+
+export const commentBlog = (id, content) => {
+  return {
+    type: 'COMMENT',
+    data: { id, content }
   }
 }
 

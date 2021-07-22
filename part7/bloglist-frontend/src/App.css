@@ -19,18 +19,14 @@
 
 .blogContainer {
   border: 1px solid black;
-  margin: 2vh;
-  text-align: left;
+  padding: 3%;
 }
 
 .blog-item {
-  margin:1%;
+  float: left;
 }
 
-.blog-item-hidden {
-  margin: 1%;
-}
-
-.blogContainer button {
-  margin-left: 1vw;
+.button-remove {
+  cursor: pointer;
+  position: relative;
 }

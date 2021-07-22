@@ -1,32 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import blogService from './../services/blogs'
 import { removeBlog, likeBlog } from '../reducers/BlogReducer'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import DeleteIcon from '@material-ui/icons/Delete'
 
 const Blog = (props) => {
-  const [ infoVisible, setInfoVisible ] = useState(false)
-  const toggleInfo = { display: infoVisible ? '' : 'none' }
-
-
-  const toggleView = () => {
-    setInfoVisible(!infoVisible)
-  }
-
-  const handleLike = async (e) => {
-    e.preventDefault()
-    try {
-      const id = e.target.value
-      const likedBlog = props.blogs.find(b => b.id === id)
-      const blog = {
-        ...likedBlog,
-        likes: likedBlog.likes + 1
-      }
-      await blogService.update(blog, id)
-      props.likeBlog(id)
-    }catch (e) {
-      console.log('Error')
-    }
-  }
 
   const handleDelete = async (e) => {
     e.preventDefault()
@@ -43,21 +22,15 @@ const Blog = (props) => {
 
   return (
     <div className="blogContainer">
-
-      <div className="blog-item-visible"><i>{props.blog.title}</i><button id='view-button' onClick={toggleView}>View</button></div>
-      <div className="blog-item-hidden" style={toggleInfo}>{props.blog.url}</div>
-      <div className="blog-item-hidden" style={toggleInfo}>Likes: {props.blog.likes}<button className="button-like" value={props.blog.id} onClick={handleLike}>Like</button></div>
-      <div className="blog-item-hidden" style={toggleInfo}>{props.blog.author}</div>
-      <div className="blog-item-hidden" style={toggleInfo}>Blog added by: {props.blog.user.name}</div>
+      <div className="blog-item"><i><Link to={`/blogs/${props.blog.id}`}>{props.blog.title}</Link></i></div>
       {
         props.user.name === props.blog.user.name &&
-        <button
+        <DeleteIcon
           id='button-remove'
+          className="button-remove"
           value={props.blog.id}
           onClick={handleDelete}
-        >
-          Remove
-        </button>
+        />
       }
     </div>
   )
