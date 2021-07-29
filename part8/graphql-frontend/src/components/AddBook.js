@@ -1,14 +1,22 @@
 import React, { useState } from 'react'
 import { TextField, Button, Typography } from '@material-ui/core'
+import { useMutation } from '@apollo/client'
+import { ALL_BOOKS, CREATE_BOOK } from '../queries'
 
 
-const AddBook = ({ createBook }) => {
+const AddBook = () => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
-  const [ published, setPublished ] = useState(null)
+  const [ published, setPublished ] = useState('')
   const [ genre, setGenre ] = useState('')
   const [ genreList, setGenreList ] = useState([])
 
+  const [ createBook ] = useMutation(CREATE_BOOK, {
+    refetchQueries: [  {query: ALL_BOOKS } ],
+    onError: (error) => {
+      console.log(error.graphQLErrors[0].message)
+    }
+  })
   const publishedOnChange = (event) => {
     setPublished(parseInt(event.target.value))
   }
@@ -23,6 +31,12 @@ const AddBook = ({ createBook }) => {
     setGenre(event.target.value)
   }
 
+  const genreListOnChange = (event) => {
+    event.preventDefault()
+    setGenreList(genreList.concat(genre))
+    setGenre('')
+  }
+
 
   const submit = async (event) => {
     event.preventDefault()
@@ -35,15 +49,13 @@ const AddBook = ({ createBook }) => {
     setGenreList([])
   }
 
-  console.log(genreList)
-
-
   return (
-    <div style={{  padding:'10px' }}>
+    <div style={{ marginLeft:'20%' }}>
       <form onSubmit={submit}>
         <div className="form-inputfield">
           <TextField
             label="Title"
+            required
             type="text"
             value={title}
             name="title"
@@ -55,6 +67,7 @@ const AddBook = ({ createBook }) => {
             label="Author"
             type="text"
             value={author}
+            required
             onChange={authorOnChange}
           />
         </div>
@@ -62,6 +75,7 @@ const AddBook = ({ createBook }) => {
           <TextField
             label="Published"
             type="text"
+            required
             value={published}
             onChange={publishedOnChange}
           />
@@ -73,15 +87,12 @@ const AddBook = ({ createBook }) => {
             value={genre}
             onChange={genreOnChange}
           />
-          <Button onClick={() => setGenreList(genreList.concat(genre))}>Add Genre</Button>
+          <Button style={{background:'#CFE0EEs', border:'1px solid black', color:'black' }} onClick={genreListOnChange}>Add Genre</Button>
         </div>
-        <Typography variant="h6" style={{ float: 'left' }}>Genres: </Typography>
-        { genreList &&
-            <Typography variant="h6">{genreList.map(g => g).join(', ')}</Typography>
-        }
-        <div>
-          <Button style={{ background: 'black', color: 'white', margin: '5px' }} type="submit">Add New Book</Button>
-        </div>
+        <Typography className="form-inputfield" variant="h6" >
+          Genres: { genreList ? genreList.map(g => g).join(', ') : null }
+        </Typography>
+        <Button style={{ background: 'black', color: 'white', margin: '15px' }} type="submit">Add New Book</Button>
       </form>
     </div>
   )

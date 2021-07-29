@@ -31,7 +31,7 @@ const Book = ({ books }) => {
           <TableBody>
             {
               books.map(b =>
-                <TableRow key={b.title}>
+                <TableRow key={b.id}>
                   <TableCell>
                     {b.title}
                   </TableCell>

@@ -9,8 +9,10 @@ import {
   TableHead,
   Typography,
 } from '@material-ui/core'
+import AddYear from './AddYear'
 
 const Author = ({ authors }) => {
+
   return (
     <div>
       <Typography variant="h2" gutterBottom>Authors</Typography>
@@ -48,6 +50,7 @@ const Author = ({ authors }) => {
           </TableBody>
         </Table>
       </TableContainer>
+      <AddYear authors={authors} />
     </div>
   )
 }
