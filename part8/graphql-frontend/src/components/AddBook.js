@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { TextField, Button, Typography } from '@material-ui/core'
+import { TextField, Button, Typography, Container } from '@material-ui/core'
 import { useMutation } from '@apollo/client'
 import { ALL_BOOKS, CREATE_BOOK } from '../queries'
 
@@ -50,7 +50,7 @@ const AddBook = () => {
   }
 
   return (
-    <div style={{ marginLeft:'20%' }}>
+    <Container>
       <form onSubmit={submit}>
         <div className="form-inputfield">
           <TextField
@@ -94,7 +94,7 @@ const AddBook = () => {
         </Typography>
         <Button style={{ background: 'black', color: 'white', margin: '15px' }} type="submit">Add New Book</Button>
       </form>
-    </div>
+    </Container>
   )
 }
 

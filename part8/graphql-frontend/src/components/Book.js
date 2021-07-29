@@ -8,10 +8,11 @@ import {
   Paper,
   TableHead,
   Typography,
+  Container,
 } from '@material-ui/core'
 const Book = ({ books }) => {
   return (
-    <div>
+    <Container>
       <Typography variant="h2" gutterBottom>Books</Typography>
       <TableContainer component={Paper}>
         <Table>
@@ -47,7 +48,7 @@ const Book = ({ books }) => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Container>
   )
 }
 
