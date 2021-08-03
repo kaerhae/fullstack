@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core'
 import AddYear from './AddYear'
 
-const Author = ({ authors }) => {
+const Author = ({ authors, setMessage, user }) => {
 
   return (
     <Container>
@@ -51,7 +51,14 @@ const Author = ({ authors }) => {
           </TableBody>
         </Table>
       </TableContainer>
-      <AddYear authors={authors} />
+      {
+        user ?
+        <AddYear
+        authors={authors}
+        setMessage={setMessage}
+      />
+      : null
+      }
     </Container>
   )
 }

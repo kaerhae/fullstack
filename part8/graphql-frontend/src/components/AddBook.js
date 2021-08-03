@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/client'
 import { ALL_BOOKS, CREATE_BOOK } from '../queries'
 
 
-const AddBook = () => {
+const AddBook = ({ setMessage, user }) => {
   const [ title, setTitle ] = useState('')
   const [ author, setAuthor ] = useState('')
   const [ published, setPublished ] = useState('')
@@ -12,9 +12,13 @@ const AddBook = () => {
   const [ genreList, setGenreList ] = useState([])
 
   const [ createBook ] = useMutation(CREATE_BOOK, {
-    refetchQueries: [  {query: ALL_BOOKS } ],
+    refetchQueries: [  {query: ALL_BOOKS} ],
     onError: (error) => {
       console.log(error.graphQLErrors[0].message)
+      setMessage(error.graphQLErrors[0].message)
+      setTimeout(() => {
+        setMessage('')
+      }, 5000)
     }
   })
   const publishedOnChange = (event) => {
@@ -40,7 +44,7 @@ const AddBook = () => {
 
   const submit = async (event) => {
     event.preventDefault()
-    const genres = genreList
+    let genres = genreList
     createBook({  variables: { title, author, published, genres } })
 
     setTitle('')
@@ -49,53 +53,57 @@ const AddBook = () => {
     setGenreList([])
   }
 
-  return (
-    <Container>
-      <form onSubmit={submit}>
-        <div className="form-inputfield">
-          <TextField
-            label="Title"
-            required
-            type="text"
-            value={title}
-            name="title"
-            onChange={titleOnChange}
-          />
-        </div>
-        <div className="form-inputfield">
-          <TextField
-            label="Author"
-            type="text"
-            value={author}
-            required
-            onChange={authorOnChange}
-          />
-        </div>
-        <div className="form-inputfield">
-          <TextField
-            label="Published"
-            type="text"
-            required
-            value={published}
-            onChange={publishedOnChange}
-          />
-        </div>
-        <div className="form-inputfield">
-          <TextField
-            label="Genre"
-            type="text"
-            value={genre}
-            onChange={genreOnChange}
-          />
-          <Button style={{background:'#CFE0EEs', border:'1px solid black', color:'black' }} onClick={genreListOnChange}>Add Genre</Button>
-        </div>
-        <Typography className="form-inputfield" variant="h6" >
-          Genres: { genreList ? genreList.map(g => g).join(', ') : null }
-        </Typography>
-        <Button style={{ background: 'black', color: 'white', margin: '15px' }} type="submit">Add New Book</Button>
-      </form>
-    </Container>
-  )
+  if (user) {
+    return (
+      <Container>
+        <form onSubmit={submit}>
+          <div className="form-inputfield">
+            <TextField
+              label="Title"
+              required
+              type="text"
+              value={title}
+              name="title"
+              onChange={titleOnChange}
+            />
+          </div>
+          <div className="form-inputfield">
+            <TextField
+              label="Author"
+              type="text"
+              value={author}
+              required
+              onChange={authorOnChange}
+            />
+          </div>
+          <div className="form-inputfield">
+            <TextField
+              label="Published"
+              type="text"
+              required
+              value={published}
+              onChange={publishedOnChange}
+            />
+          </div>
+          <div className="form-inputfield">
+            <TextField
+              label="Genre"
+              type="text"
+              value={genre}
+              onChange={genreOnChange}
+            />
+            <Button style={{background:'#CFE0EEs', border:'1px solid black', color:'black' }} onClick={genreListOnChange}>Add Genre</Button>
+          </div>
+          <Typography className="form-inputfield" variant="h6" >
+            Genres: { genreList ? genreList.map(g => g).join(', ') : null }
+          </Typography>
+          <Button style={{ background: 'black', color: 'white', margin: '15px' }} type="submit">Add New Book</Button>
+        </form>
+      </Container>
+    )
+  } else {
+    return null
+  }
 }
 
 export default AddBook

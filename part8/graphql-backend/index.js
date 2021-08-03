@@ -45,6 +45,7 @@ const typeDefs = gql`
   
   type Token {
     token: String!
+    user: User!
   }
 
   type Query {
@@ -52,6 +53,7 @@ const typeDefs = gql`
     authorCount: Int!
     allBooks(author: String, genre: String): [Book!]!
     allAuthors: [Author!]!
+    allGenres: [Book!]!
     me: User
   }
 
@@ -112,15 +114,21 @@ const resolvers = {
         return await Book.find({})
       }
     },
+
+    allGenres: async () => {
+      return await Book.find({}, { genres: 1} )
+    },
     
     allAuthors: async () => {
-      return await Author.find({})
+      return await Author.find({ })
     },
 
     me: (root, args, context) => {
       return context.currentUser
     }
-  }, 
+  },
+  
+  
 
   Book: {
     author: async (root) => {
@@ -144,7 +152,7 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args, context) => {
-      const checkAuthor = await Author.findOne({ name: args.author })
+      let checkAuthor = await Author.findOne({ name: args.author })
       const currentUser = context.currentUser
 
       if (!currentUser) {
@@ -218,7 +226,7 @@ const resolvers = {
 
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username })
-
+      console.log(user)
       if( !user || args.password !== 'secret') {
         throw new UserInputError('Wrong username or password')
       }
@@ -226,9 +234,11 @@ const resolvers = {
       const userForToken = {
         username: user.username,
         id: user.id,
+        favoriteGenre: user.favoriteGenre
       }
+      console.log(userForToken)
 
-      return { token: jwt.sign(userForToken, JWT_SECRET)}
+      return { token: jwt.sign(userForToken, JWT_SECRET), user: userForToken}
     }
     
   }
