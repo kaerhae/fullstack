@@ -11,7 +11,8 @@
   "author": "Erno Kärhä",
   "license": "MIT",
   "dependencies": {
-    "apollo-server": "^3.0.2",
+    "apollo-server": "^2.21.0",
+    "dataloader": "^2.0.0",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.1",
     "jsonwebtoken": "^8.5.1",

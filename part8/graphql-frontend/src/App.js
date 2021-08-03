@@ -3,13 +3,13 @@ import {
   BrowserRouter as Router,
   Switch, Route
 } from 'react-router-dom'
-import { useApolloClient, useMutation, useQuery } from '@apollo/client'
+import { useApolloClient, useMutation, useLazyQuery, useQuery, useSubscription } from '@apollo/client'
 import Book from './components/Book'
 import Author from './components/Author'
 import Menu from './components/Menu'
 import AddBook from './components/AddBook'
 import Alert from '@material-ui/lab/Alert';
-import { ALL_BOOKS, ALL_AUTHORS, LOGIN, ALL_GENRES } from './queries'
+import { ALL_AUTHORS, LOGIN, ALL_GENRES, BOOK_ADDED, ALL_BOOKS } from './queries'
 import './App.css'
 import LoginForm from './components/LoginForm'
 import Recommended from './components/Recommended'
@@ -22,6 +22,28 @@ const App = () => {
   const client = useApolloClient()
   const genreResult = useQuery(ALL_GENRES)
   const authorResult = useQuery(ALL_AUTHORS)
+  const [ books, setBooks ] = useState('')
+
+  const [ filterValue, setFilterValue ] = useState('')
+
+  const [getBook, bookResult] = useLazyQuery(ALL_BOOKS)
+
+
+  useEffect(() => {
+    if(!filterValue) {
+      getBook()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (bookResult.data) {
+      console.log(bookResult)
+      setBooks(bookResult.data.allBooks)
+    }  
+  }, [bookResult])
+  
+
+
   const [ login, result ] = useMutation(LOGIN, {
     onError: (error) => {
       console.log(error)
@@ -53,10 +75,37 @@ const App = () => {
     }
   }, [result.data]) // eslint-disable-line
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) => 
+      set.map(p => p.id).includes(object.id)  
+
+    const dataInStore = client.readQuery({ query: ALL_BOOKS })
+    console.log(dataInStore)
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: ALL_BOOKS,
+        data: { allBooks : dataInStore.allBooks.concat(addedBook) }
+      })
+    }   
+  }
+
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      setMessage(`${addedBook.title} by ${addedBook.author.name} added to library!`)
+      setTimeout(() => {
+        setMessage('')
+      }, 5000)
+      updateCacheWith(addedBook)
+    }
+  })
+
   if (authorResult.loading || genreResult.loading)  {
     return <div>loading...</div>
   }
 
+ 
   
 
   const handleLogin = async (e) => {
@@ -71,6 +120,20 @@ const App = () => {
     setUser(null)
     localStorage.clear()
     client.resetStore()
+  }
+
+  const handleOnChange = filterValue => {
+    setFilterValue(filterValue.value)
+  }
+
+  const submitSelect = (e) => {
+    e.preventDefault()
+    if (filterValue === 'all') {
+      getBook()
+    } else {
+      getBook({ variables: { genre: filterValue }})
+    }
+
   }
 
   if(!user) {
@@ -99,6 +162,9 @@ const App = () => {
               <Route path="/books">
                 <Book
                   genres={genreResult.data.allGenres}
+                  books={books}
+                  submitSelect={submitSelect}
+                  handleOnChange={handleOnChange}
                 />
               </Route>
               <Route path="/authors">
@@ -126,6 +192,7 @@ const App = () => {
               <Route path="/recommended">
                 <Recommended
                    user={user}
+                   books={books}
                 />
               </Route>
           </Switch>

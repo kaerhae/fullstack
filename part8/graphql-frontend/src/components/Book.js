@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {
   Table,
   TableBody,
@@ -11,31 +11,9 @@ import {
   Container,
 } from '@material-ui/core'
 import Filter from './Filter'
-import { useLazyQuery, useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
-
-const Book = ({ genres }) => {
-  const [ books, setBooks ] = useState('')
-
-  const [ filterValue, setFilterValue ] = useState('')
-
-  const [getBook, bookResult] = useLazyQuery(ALL_BOOKS)
 
 
-  useEffect(() => {
-    if(!filterValue) {
-      getBook()
-    }
-  }, [])
-
-  useEffect(() => {
-    if (bookResult.data) {
-      setBooks(bookResult.data.allBooks)
-    }  
-  }, [bookResult])
-  
-
-
+const Book = ({ genres, books, handleOnChange, submitSelect }) => {
 
   const mapGenres = genres.map(g => g.genres)
   const single = mapGenres.reduce((a, b) => a.concat(b))
@@ -51,20 +29,10 @@ const Book = ({ genres }) => {
   options = [ {name:"All", value: "all"}, ...options]
 
 
-
-  const handleOnChange = filterValue => {
-    setFilterValue(filterValue.value)
+  if (!books) {
+    return null
   }
-
-  const submitSelect = (e) => {
-    e.preventDefault()
-    if (filterValue === 'all') {
-      getBook()
-    } else {
-      getBook({ variables: { genre: filterValue }})
-    }
-
-  }
+  
 
   return (
     <Container>

@@ -9,24 +9,24 @@ import {
   Typography,
   Container
 } from '@material-ui/core'
-import React, { useEffect } from 'react'
-import { useQuery } from '@apollo/client'
-import { ALL_BOOKS } from '../queries'
+import React from 'react'
 
-const Recommended = ({ user }) => {
 
-  const bookResult = useQuery(ALL_BOOKS)
+const Recommended = ({ user, books }) => {
 
+
+  if (!books) {
+    return null
+  }
   
 
-  if (user && bookResult.data) {
-    const favorite = bookResult.data.allBooks.filter(a => {
+  console.log(books)
+    const favorite = books.filter(a => {
       return a.genres.some(b => {
         return b.includes(user.favoriteGenre)
       })
     })
   
-    
     return (
       <Container>
         <Typography variant="h3">Recommendations</Typography>
@@ -67,9 +67,6 @@ const Recommended = ({ user }) => {
         </TableContainer>
       </Container>
     )
-  } else {
-    return null
-  }
 }
 
 export default Recommended

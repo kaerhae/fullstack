@@ -1,5 +1,5 @@
 import { Container, Button } from '@material-ui/core'
-import React, { useState } from 'react'
+import React from 'react'
 import Select from 'react-select'
 
 const Filter = ({
