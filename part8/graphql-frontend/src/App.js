@@ -33,11 +33,10 @@ const App = () => {
     if(!filterValue) {
       getBook()
     }
-  }, [])
+  }, [filterValue, getBook])
 
   useEffect(() => {
     if (bookResult.data) {
-      console.log(bookResult)
       setBooks(bookResult.data.allBooks)
     }  
   }, [bookResult])
@@ -161,7 +160,7 @@ const App = () => {
           <Switch>
               <Route path="/books">
                 <Book
-                  genres={genreResult.data.allGenres}
+                  genres={genreResult.data.allBooks}
                   books={books}
                   submitSelect={submitSelect}
                   handleOnChange={handleOnChange}

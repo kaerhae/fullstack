@@ -15,6 +15,12 @@ const BOOK_DETAILS = gql`
   }
 `
 
+const GENRE_DETAILS = gql`
+  fragment GenreDetails on Book {
+    genres
+  }
+`
+
 export const ALL_BOOKS = gql`
   query($genre: String) {
     allBooks(genre: $genre)  {
@@ -25,10 +31,10 @@ export const ALL_BOOKS = gql`
 
 export const ALL_GENRES = gql`
   query {
-    allGenres {
-      genres
+    allBooks {
+      ...GenreDetails
     }
-  }
+  } ${GENRE_DETAILS}
 `
 
 

@@ -14,7 +14,6 @@ import Filter from './Filter'
 
 
 const Book = ({ genres, books, handleOnChange, submitSelect }) => {
-
   const mapGenres = genres.map(g => g.genres)
   const single = mapGenres.reduce((a, b) => a.concat(b))
   const uniqueNames = single.filter((val,id,array) => array.indexOf(val) === id)
