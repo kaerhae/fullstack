@@ -1,6 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
-
 
 const courses = [
   {
@@ -65,38 +63,31 @@ const courses = [
 ]
 
 
-    const Kurssi = ({ kurssi }) => {
-      
-    const reducer = (accumulator, currentValue) => accumulator + currentValue
+const Kurssi = ({ kurssi }) => {
+  const reducer = (accumulator, currentValue) => accumulator + currentValue
+  const taulukko = kurssi.parts.map((item, i) => item.exercises)
+  const total = (taulukko.reduce(reducer))
 
-    const taulukko = kurssi.parts.map((item, i) => item.exercises)
-
-    const total = (taulukko.reduce(reducer))
-
-    return (
-      <div>
-          <h2>{kurssi.name}</h2>
-          
-          {
-            kurssi.parts.map((item) => <p key={item.id}>{item.name} {item.exercises}</p>)}
-
-          <b>Total of {total} exercises</b>
-        </div>
-    )  
-
+  return (
+    <div>
+        <h2>{kurssi.name}</h2>
+        {
+          kurssi.parts.map((item) => <p key={item.id}>{item.name} {item.exercises}</p>)
+        }
+        <b>Total of {total} exercises</b>
+      </div>
+  )
 }
 
-    const Course = (props) => {
-    
-    return (
-        <div>
-        <h1>Web Development Curriculum</h1>
-        {courses.map((kurssi, parts) => 
-          <Kurssi key={parts} kurssi={kurssi} />
-        )}
-    
-        </div>
-    )
+const Course = () => {
+  return (
+    <div>
+      <h1>Web Development Curriculum</h1>
+      {courses.map((kurssi, parts) => 
+        <Kurssi key={parts} kurssi={kurssi} />
+      )}
+    </div>
+  )
 }
 
 

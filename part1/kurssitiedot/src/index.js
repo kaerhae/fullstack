@@ -23,33 +23,33 @@ import ReactDOM from 'react-dom'
 
     return (
       <div>
-        <Header />
-        <Content />
-        <Total />
+        <Header course={course}/>
+        <Content parts={course.parts}/>
+        <Total parts={course.parts}/>
       </div>
     )
   }
 
   
-  const Header = () => {
+  const Header = ({course}) => {
     return (
       <h1>{course.name}</h1>
     )
   }
 
-  const Content = () => {
+  const Content = ({parts}) => {
     return (
       <div>
-      <p>{course.parts[0].name} {course.parts[0].exercises}</p>
-      <p>{course.parts[1].name} {course.parts[1].exercises}</p>
-      <p>{course.parts[2].name} {course.parts[2].exercises}</p>
+      <p>{parts[0].name} {parts[0].exercises}</p>
+      <p>{parts[1].name} {parts[1].exercises}</p>
+      <p>{parts[2].name} {parts[2].exercises}</p>
 </div>
     )
   }
 
-  const Total = () => {
+  const Total = ({parts}) => {
     return (
-      <p><b>Total: {course.parts[0].exercises + course.parts[1].exercises + course.parts[2].exercises}</b></p>
+      <p><b>Total: {parts[0].exercises + parts[1].exercises + parts[2].exercises}</b></p>
     )
   }
 

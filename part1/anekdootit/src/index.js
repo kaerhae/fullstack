@@ -10,7 +10,7 @@ const Button = (props) => {
   )
 }
 
-const App = (props) => {
+const App = () => {
 
   const pointArray = new Array(6).fill(0)
 
@@ -19,34 +19,16 @@ const App = (props) => {
   const [bestVote, setBestVote] = useState(0)
   
 
-
-
-
   const clickHandler = () => {
     const randomAnect = Math.floor(Math.random() * anecdotes.length)
-
-    const newSelected = anecdotes[randomAnect]
-    // Console-komento satunnaisgeneraattorin tarkistusta varten
-
-
-    console.log(newSelected)
-    console.log(randomAnect)
-
     setSelected(randomAnect)
-
   }
 
 
   const handleVote = () => {
-
     let copy = [...points]
     copy[selected] += 1
     setPoint(copy)
-
-    console.log(points)
-
-    console.log(Math.max(...points))
-
     const mostVotes = Math.max(...points)
     const findIndex = points.findIndex(point => point === mostVotes)
     setBestVote(findIndex)
@@ -59,19 +41,14 @@ const App = (props) => {
     <div>
       <h1>Anecdote of the day</h1>
       {anecdotes[selected]}
-
-     
       <p>This anecdote has {points[selected]} votes</p>
       <Button text="Next anecdote" onClick={clickHandler}/>
       <Button text="Vote" onClick={handleVote} />
       <h1>Anecdote with most votes</h1>
       <p>{anecdotes[bestVote]}</p>
-     
     </div>
   )
 }
-
-
 
 
 const anecdotes = [

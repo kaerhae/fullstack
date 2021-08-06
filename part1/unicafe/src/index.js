@@ -19,13 +19,13 @@ const StatisticLine = (props) => {
 
  return (
   <table>
-     <tbody>
-          <tr>
-            <td>{props.text}</td> 
-            <td>{props.value}</td>
-          </tr>
-          </tbody>
-          </table>
+    <tbody>
+      <tr>
+        <td>{props.text}</td> 
+        <td>{props.value}</td>
+      </tr>
+    </tbody>
+  </table>
 
   )
 }
@@ -39,7 +39,6 @@ const Statistics = (props) =>  {
   }
   return (
     <div>
-      
       <StatisticLine text="Good" value ={props.good} />
       <StatisticLine text="Neutral" value ={props.neutral} />
       <StatisticLine text="Bad" value ={props.bad} />
@@ -51,7 +50,6 @@ const Statistics = (props) =>  {
 }
 
 const App = () => {
-
   const otsikko = 'Give Feedback'
   const otsikko2 = 'Statistics'
   const [good, setGood] = useState(0)
@@ -94,7 +92,6 @@ const App = () => {
       onClick={handleBadClick}
       />
       <Header otsikko={otsikko2} />
-      
       <Statistics
         good={good}
         neutral={neutral}
@@ -102,8 +99,7 @@ const App = () => {
         all={all}
         average={rAverage}
         pos={rPos}
-        />
-      
+      />
     </div>
     )
 }
