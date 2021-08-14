@@ -8,7 +8,7 @@
     {
       "id": "21149",
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 25
+      "votes": 27
     },
     {
       "id": "69581",
@@ -18,7 +18,7 @@
     {
       "id": "36975",
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-      "votes": 11
+      "votes": 12
     },
     {
       "content": "Premature optimization is the root of all evil.",
@@ -28,7 +28,7 @@
     {
       "id": "98312",
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
-      "votes": 10
+      "votes": 12
     },
     {
       "id": "dhBV-6K",
@@ -49,6 +49,11 @@
       "id": "jn0tfiI",
       "content": "If you don't code on vacations, you're not going to be senior",
       "votes": 2
+    },
+    {
+      "id": "tLR9WoD",
+      "content": "Testing is best done by unnecessarily confusing anecdote",
+      "votes": 1
     }
   ]
 }

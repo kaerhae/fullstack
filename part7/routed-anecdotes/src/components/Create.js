@@ -1,9 +1,9 @@
 import React from 'react'
-import { useField } from '../hooks'
+import { useField} from '../hooks/index.js'
 import { useHistory } from 'react-router-dom'
 
 const CreateNew = (props) => {
-  const { content, clearContent }  = useField('text')
+  const { content, clearContent } = useField('text')
   const { author, clearAuthor } = useField('text')
   const { info, clearInfo } = useField('text')
   let history = useHistory()
@@ -26,7 +26,6 @@ const CreateNew = (props) => {
     clearInfo.resetForm()
   }
 
-  
   return (
     <div>
       <h2>create a new anecdote</h2>
