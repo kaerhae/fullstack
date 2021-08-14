@@ -72,7 +72,7 @@ const App = () => {
             const errorMessage = `Person was already removed from server`
             setErrorMessage(errorMessage)
             setTimeout(() => {
-              setMessage(null)
+              setErrorMessage(null)
             }, 11000)
           })
       }
@@ -94,7 +94,7 @@ const App = () => {
           const errorMessage = `Error happened`
           setErrorMessage(errorMessage)
           setTimeout(() => {
-            setMessage(null)
+            setErrorMessage(null)
           }, 11000)
         })
     }
@@ -122,7 +122,7 @@ const App = () => {
         const errorMessage = `Person was already removed from server`
         setErrorMessage(errorMessage)
         setTimeout(() => {
-          setMessage(null)
+          setErrorMessage(null)
         }, 11000)
       })
     }
