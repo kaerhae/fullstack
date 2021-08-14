@@ -19,18 +19,18 @@ Cypress.Commands.add('login', ({ username, password }) => {
   })
 })
 
-Cypress.Commands.add('addUser', ({name, username, password}) => {
-  
-  cy.request('POST', 'http://localhost:3005/api/users/', {name, username, password}) 
+Cypress.Commands.add('addUser', ({ name, username, password }) => {
+
+  cy.request('POST', 'http://localhost:3005/api/users/', { name, username, password })
   cy.visit('http://localhost:3000')
 })
 
-Cypress.Commands.add('addBlog', ({title, url, author}) => {
+Cypress.Commands.add('addBlog', ({ title, url, author }) => {
   cy.get('.create-button').click()
-    cy.get('.title').type(title)
-    cy.get('.url').type(url)
-    cy.get('.author').type(author)
-    cy.get('.add-button').click()
+  cy.get('.title').type(title)
+  cy.get('.url').type(url)
+  cy.get('.author').type(author)
+  cy.get('.add-button').click()
 
 })
 

@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
 import Blog from './Blog'
-import { prettyDOM } from '@testing-library/dom';
+import { prettyDOM } from '@testing-library/dom'
 
 
 
@@ -12,17 +12,17 @@ describe('Blog-komponentti', () => {
   const mockHandleLike = jest.fn()
 
   const blog = {
-    title: "Testiotsikko",
-    author: "Testimies",
-    url: "www.testi.fi",
+    title: 'Testiotsikko',
+    author: 'Testimies',
+    url: 'www.testi.fi',
     likes: 3,
     user: {
-      name:"Testimies"
+      name:'Testimies'
     }
   }
 
   const user = {
-    name: "Testimies"
+    name: 'Testimies'
   }
 
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('Blog-komponentti', () => {
   })
 
   test('Renders only blog title and author by default, not url and likes', () => {
-    
+
 
     const title = component.getByText(
       'Testiotsikko'
@@ -72,9 +72,9 @@ describe('Blog-komponentti', () => {
     expect(mockHandleLike.mock.calls).toHaveLength(2)
     console.log(prettyDOM(likeButton))
 
-  
+
   })
 
-  
+
 
 })
