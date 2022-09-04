@@ -7,7 +7,7 @@ import AddPatientModal from "../AddPatientModal";
 import { Patient } from "../types";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
-import { addPatient, useStateValue } from "../state";
+import { useStateValue } from "../state";
 import { Link } from "react-router-dom";
 
 const PatientListPage = () => {
@@ -29,9 +29,9 @@ const PatientListPage = () => {
         `${apiBaseUrl}/patients`,
         values
       );
-      dispatch(addPatient(newPatient));
+      dispatch({ type: "ADD_PATIENT", payload: newPatient });
       closeModal();
-    } catch (e) {
+    } catch (e: any) {
       console.error(e.response?.data || 'Unknown Error');
       setError(e.response?.data?.error || 'Unknown error');
     }
@@ -54,7 +54,12 @@ const PatientListPage = () => {
         <Table.Body>
           {Object.values(patients).map((patient: Patient) => (
             <Table.Row key={patient.id}>
-              <Table.Cell><Link to={`/patients/${patient.id}`}>{patient.name}</Link></Table.Cell>
+              <Table.Cell>
+                <Link
+                  to={`/patients/${patient.id}`}>
+                    {patient.name}
+                  </Link>
+                </Table.Cell>
               <Table.Cell>{patient.gender}</Table.Cell>
               <Table.Cell>{patient.occupation}</Table.Cell>
               <Table.Cell>
