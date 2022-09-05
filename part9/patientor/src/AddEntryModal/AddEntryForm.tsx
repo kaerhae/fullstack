@@ -87,12 +87,7 @@ export const AddEntryForm = ({ onSubmit, onCancel } : Props ) => {
         }
 
         switch (values.type) {
-          case "HealthCheck":
-            if(!values.healthCheckRating){
-              errors.healthCheckRating = requiredError;
-            }
-            break;
-        
+          
           case "OccupationalHealthcare":
             if(!values.employerName){
               errors.employerName = requiredError;

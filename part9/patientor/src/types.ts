@@ -98,3 +98,15 @@ export type Entry =
   | HospitalEntry
   | OccupationalHealthcareEntry
   | HealthCheckEntry;
+
+  export type EntryFormValues = {
+    description: string;
+    date: string;
+    specialist: string;
+    type: EntryType,
+    diagnosisCodes?: Diagnosis[],
+    healthCheckRating?: HealthCheckRating,
+    sickLeave?: SickLeave,
+    discharge?: Discharge,
+    employerName?: string;
+  };

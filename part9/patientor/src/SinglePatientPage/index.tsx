@@ -1,8 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Button, Container } from "semantic-ui-react";
-import { Entry, SinglePageParams } from "../types";
-import { setSinglePatient, useStateValue } from "../state";
+import { Entry, EntryFormValues, SinglePageParams } from "../types";
+import { addEntry, setSinglePatient, useStateValue } from "../state";
 import { Patient } from "../types";
 import axios from "axios";
 import { apiBaseUrl } from "../constants";
@@ -10,7 +10,6 @@ import { apiBaseUrl } from "../constants";
 import NameAndGender from "./NameAndGender";
 import Entries from "./Entries";
 import AddEntryModal from "../AddEntryModal";
-import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
 const SinglePatientPage = () => {
   const [ { patient, diagnoses } ] = useStateValue();
 
@@ -40,12 +39,12 @@ const SinglePatientPage = () => {
             diagnosisCodes: values.diagnosisCodes
           };
     
-          console.log("Values are:", values);
           const { data: newHealthCheckData } = await axios.post<Entry>(
             `${apiBaseUrl}/patients/${id}/entries`,
             newHealthCheck
           );
-          console.log(newHealthCheckData);
+          dispatch(addEntry(id, newHealthCheckData));
+
           break;
           case "Hospital":
             const newHospital: EntryFormValues = {
@@ -57,12 +56,11 @@ const SinglePatientPage = () => {
               discharge: values.discharge
             };
       
-            console.log("Values are:", values);
             const { data: newHospitalData } = await axios.post<Entry>(
               `${apiBaseUrl}/patients/${id}/entries`,
               newHospital
             );
-            console.log(newHospitalData);
+            dispatch(addEntry(id, newHospitalData));
             break;
           case "OccupationalHealthcare":
             const newOccupational: EntryFormValues = {
@@ -75,12 +73,11 @@ const SinglePatientPage = () => {
               sickLeave: values.sickLeave
             };
       
-            console.log("Values are:", values);
             const { data: newOccupationalData } = await axios.post<Entry>(
               `${apiBaseUrl}/patients/${id}/entries`,
               newOccupational
             );
-            console.log(newOccupationalData);
+            dispatch(addEntry(id, newOccupationalData));
             break;
         default:
           break;

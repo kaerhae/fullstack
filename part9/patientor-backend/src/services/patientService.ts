@@ -52,8 +52,8 @@ const addEntry = (id: string, entry: NewEntry) => {
         ...entry,
         id: uuidv4(),
     };
-    const newPatient = patient?.entries.push(newEntry);
-    return newPatient;
+    patient?.entries.push(newEntry);
+    return newEntry;
 }
 
 export default {
